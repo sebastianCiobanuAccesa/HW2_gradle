@@ -12,8 +12,51 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation group: 'org.json', name: 'json', version: '20220320'
 }
 
 test {
     useJUnitPlatform()
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['code']
+        }
+        resources {
+            srcDirs = ['resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test-code']
+        }
+        resources {
+            srcDirs = ['test-resources']
+        }
+    }
+}
+buildDir = 'package'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'code.example.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+//task customFatJar(type: Jar) {
+//    manifest {
+//        attributes 'Main-Class': 'code.example.Main'
+//    }
+//    baseName = 'all-in-one-jar'
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+//    with jar
+//}
