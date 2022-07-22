@@ -51,6 +51,7 @@ jar {
     }
 }
 
+// I also wanted to keep the original jar, but I could not.
 //task customFatJar(type: Jar) {
 //    manifest {
 //        attributes 'Main-Class': 'code.example.Main'
